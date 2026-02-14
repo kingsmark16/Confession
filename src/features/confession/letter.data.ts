@@ -1,16 +1,57 @@
 export const letterRecipient = 'GUELDA'
 export const letterSignature = 'M.A.'
-export const letterMessage = 'I am writing this because my heart has become too full to keep its secret any longer. For a long time, I tried to convince myself that what I felt for you was just a wonderful, deep friendship. I told myself that the butterflies in my stomach were just a reaction to your bright energy, and that the way my eyes searched for you in a crowded room was just habit. But I cannot hide from the truth anymore. I am completely, deeply, and irrevocably in love with you.Every single day spent in your presence feels like a gift. You have this incredible ability to make the ordinary world feel vibrant and full of magic. Your laughter is my favorite sound in the universe, a sweet melody that can instantly clear away my darkest days. When you speak about the things you care about, your eyes light up with a passion that absolutely captivates me. I find myself hanging onto your every word, wanting to know every corner of your mind, every dream you harbor, and every fear you carry.It happened slowly, and then all at once. It was in the quiet moments we shared—the comfortable silences, the shared glances, and the effortless way we understand each other. I realized that my favorite parts of the day are always the ones that involve you. You have become my safe harbor and my greatest adventure all wrapped into one. When something good happens, you are the first person I want to tell. When things go wrong, your presence is the only comfort I seek. You have changed the texture of my life just by being a part of it.I love you not just for who you are, but for the person I become when I am with you. You inspire me to be kinder, braver, and truer to myself. Your gentleness challenges my armor, and your strength gives me courage. To love you feels as natural and essential as breathing.Please know that I am telling you this with zero expectations. I value our connection more than words can say, and the last thing I ever want to do is create distance or make you feel pressured. I only know that a love this profound cannot be kept in the shadows. It deserves to be spoken aloud, to be given a voice. You deserve to know how deeply you are appreciated, how fiercely you are admired, and how completely you are loved.If you do not feel the same way, I understand, and I will respect your feelings completely. But if there is even a small spark of the same warmth in your heart, please let me know. I would love nothing more than the chance to show you, every single day, just how much you mean to me.'
+export const letterMessage = `Hi… it’s me, Maria. Yeah, the name you called me when we first met. 😊
 
+I actually started building this webpage on February 13, 2026, right after I realized I had fallen for you. Yieee. 💕 As someone in Info Tech, I thought this would be a unique and creative way to confess my feelings. I don’t know… maybe this is cringe or corny to you, but please don’t laugh, okay? 😅
+
+I still remember the first time we met. What caught my attention right away was your smile and your energy. It felt so natural and warm. ✨ And your eyes… especially with your glasses on, I don’t know, they just looked perfect to me. 🤍
+
+Then about a week later, that moment happened. You know it.When you suddenly startled me (ginulat mo ako) instead of the kid. 😳 I wasn’t even sure if it was really an accident, or if you did it on purpose just to tease me. But honestly, that was the exact moment something changed for me. 💫 That was when I started falling for you. 💖
+
+Since then, you’ve been on my mind all the time, randomly and unexpectedly, no matter what I’m doing. And it’s strange, but in a good way. You made my life feel exciting again. 🌸 Waking up in the morning felt different, like I had something to look forward to. Like I had a reason to go to work, because there was a chance I’d see you. 😊
+
+But then, things didn’t go the way I hoped. We were pulled out of the RHU and were reassigned to different department. I felt really sad, honestly. 💔 Not being able to see you anymore, it hurt more than I expected.
+
+But instead of fading, my feelings for you only grew deeper. 💞
+
+And the deeper my feelings became, the harder it was for me to confess. Because in my mind, we weren’t seeing each other anymore. I kept thinking that maybe you had already forgotten about me. And that thought scared me. 😔 It made me hold everything back, even when all I wanted was to tell you how I truly feel.
+
+Even after I graduated, you never really left my mind. I still found myself thinking about you in the most random moments, like nothing had changed. 💭
+
+So I decided to come back to this, to continue what I started and finally finish this page for you. 💻✨
+
+And now, here it is.
+
+I don’t know when or how you’ll find this, but I’m hoping that someday, somehow, you’ll get the chance to read this letter. 🌙 And when that day comes, I hope it brings a smile to your face, just like yours did to me. 😊
+
+And maybe, just maybe, I hope that what I feel isn’t one-sided. 💗 I hope that somewhere in your heart, you felt something too. 💓`
 const wordsPerPage = 80
 
 export function splitLetterIntoPages(message: string) {
-  const words = message.trim().split(/\s+/)
+  const paragraphs = message.trim().split(/\n\s*\n/)
   const pages: string[] = []
+  let currentParagraphs: string[] = []
+  let currentWordCount = 0
 
-  for (let index = 0; index < words.length; index += wordsPerPage) {
-    pages.push(words.slice(index, index + wordsPerPage).join(' '))
+  const addPage = () => {
+    if (currentParagraphs.length === 0) return
+    pages.push(currentParagraphs.join('\n\n'))
+    currentParagraphs = []
+    currentWordCount = 0
   }
 
+  for (const paragraph of paragraphs) {
+    const words = paragraph.trim().split(/\s+/)
+
+    for (let index = 0; index < words.length; index += wordsPerPage) {
+      const chunk = words.slice(index, index + wordsPerPage)
+      if (currentWordCount > 0 && currentWordCount + chunk.length > wordsPerPage) addPage()
+      currentParagraphs.push(chunk.join(' '))
+      currentWordCount += chunk.length
+      if (currentWordCount >= wordsPerPage) addPage()
+    }
+  }
+
+  addPage()
   return pages
 }

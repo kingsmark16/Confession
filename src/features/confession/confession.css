@@ -47,7 +47,7 @@ main, .site-footer { position: relative; z-index: 1; }
  .letter-salutation { display: flex; width: 100%; margin-block-start: var(--space-3); margin-block-end: var(--space-3) !important; color: var(--pop-red); font-family: var(--font-display); font-size: clamp(0.9rem, 1.8vw, 1.35rem) !important; justify-content: flex-start; text-align: left; }.letter-salutation strong { color: var(--ink); }.confession-card footer, .confession-card footer span, .confession-card footer strong { text-decoration: none !important; }
  .letter-romance { position: absolute; width: clamp(1.7rem, 4vw, 3.2rem); height: clamp(1.7rem, 4vw, 3.2rem); filter: drop-shadow(var(--space-1) var(--space-1) 0 var(--paper)); pointer-events: none; }.letter-romance-top { inset-block-start: var(--space-3); inset-inline-end: var(--space-3); color: var(--pop-red); transform: rotate(12deg); }.letter-romance-bottom { inset-block-end: var(--space-3); inset-inline-start: var(--space-3); color: var(--pop-green); transform: rotate(-12deg); }
  .letter-message { display: grid; color: var(--ink); font-family: var(--font-hand); font-size: clamp(1rem, 2.3vw, 1.6rem) !important; font-weight: 400; letter-spacing: 0; line-height: 1.28; }
-.letter-message-reserve, .letter-message-written { grid-area: 1 / 1; }
+.letter-message-reserve, .letter-message-written { grid-area: 1 / 1; white-space: pre-line; }
 .letter-message-reserve { visibility: hidden; }
 .letter-message-written { align-self: start; }
 .letter-writing-cursor { display: inline-block; width: 0.14em; height: 0.95em; margin-inline-start: 0.12em; background: var(--pop-red); vertical-align: -0.08em; animation: letter-cursor-blink var(--duration-slow) steps(1, end) infinite; }
