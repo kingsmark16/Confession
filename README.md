@@ -62,12 +62,12 @@ On Windows systems where PowerShell blocks npm scripts, use `npm.cmd` in place o
 
 ## Azure deployment
 
-The workflow in `.github/workflows/azure-static-web-apps-zealous-tree-012925600.yml` deploys the Vite `dist` folder to Azure Static Web Apps whenever `main` changes. Pull requests create a preview deployment and closing a pull request removes it.
+The workflow in `.github/workflows/azure-static-web-apps-icy-sky-0d3066f00.yml` deploys the Vite `dist` folder to Azure Static Web Apps whenever `main` changes. Pull requests create a preview deployment and closing a pull request removes it.
 
 Add these GitHub repository secrets before pushing to `main`:
 
 ```text
-AZURE_STATIC_WEB_APPS_API_TOKEN_ZEALOUS_TREE_012925600
+AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_SKY_0D3066F00
 VITE_SUPABASE_URL
 VITE_SUPABASE_PUBLISHABLE_KEY
 SITE_PASSWORD
@@ -75,7 +75,7 @@ SITE_PASSWORD
 
 The Azure token comes from the Static Web App deployment token. The Supabase values are used during the client build. `SITE_PASSWORD` is used only while building the password gate and is never passed as a plain value to the browser bundle.
 
-If deployment reports `No matching Static Web App was found or the api key was invalid`, open the Azure Static Web App resource that owns this site, choose **Manage deployment token**, copy the current token, and replace the GitHub secret `AZURE_STATIC_WEB_APPS_API_TOKEN_RED_RIVER_07569A200`. The token must come from the same Static Web App resource. Resetting or recreating that resource invalidates older tokens.
+If deployment reports `No matching Static Web App was found or the api key was invalid`, open the Azure Static Web App resource that owns this site, choose **Manage deployment token**, copy the current token, and replace the GitHub secret `AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_SKY_0D3066F00`. The token must come from the same Static Web App resource. Resetting or recreating that resource invalidates older tokens.
 
 ## Supabase setup
 
