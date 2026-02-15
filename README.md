@@ -75,6 +75,8 @@ SITE_PASSWORD
 
 The Azure token comes from the Static Web App deployment token. The Supabase values are used during the client build. `SITE_PASSWORD` is used only while building the password gate and is never passed as a plain value to the browser bundle.
 
+If deployment reports `No matching Static Web App was found or the api key was invalid`, open the Azure Static Web App resource that owns this site, choose **Manage deployment token**, copy the current token, and replace the GitHub secret `AZURE_STATIC_WEB_APPS_API_TOKEN_RED_RIVER_07569A200`. The token must come from the same Static Web App resource. Resetting or recreating that resource invalidates older tokens.
+
 ## Supabase setup
 
 The page writes directly to `public.responses`. There is no custom backend, account system, or in app admin screen. View submissions in the Supabase Dashboard Table Editor.
