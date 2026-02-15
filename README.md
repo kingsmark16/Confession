@@ -62,12 +62,12 @@ On Windows systems where PowerShell blocks npm scripts, use `npm.cmd` in place o
 
 ## Azure deployment
 
-The workflow in `.github/workflows/azure-static-web-apps-red-river-07569a200.yml` deploys the Vite `dist` folder to Azure Static Web Apps whenever `main` changes. Pull requests create a preview deployment and closing a pull request removes it.
+The workflow in `.github/workflows/azure-static-web-apps-zealous-tree-012925600.yml` deploys the Vite `dist` folder to Azure Static Web Apps whenever `main` changes. Pull requests create a preview deployment and closing a pull request removes it.
 
 Add these GitHub repository secrets before pushing to `main`:
 
 ```text
-AZURE_STATIC_WEB_APPS_API_TOKEN_RED_RIVER_07569A200
+AZURE_STATIC_WEB_APPS_API_TOKEN_ZEALOUS_TREE_012925600
 VITE_SUPABASE_URL
 VITE_SUPABASE_PUBLISHABLE_KEY
 SITE_PASSWORD
