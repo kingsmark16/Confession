@@ -1,4 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Permanent+Marker&display=swap');
+@font-face {
+  font-family: 'Bungee';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../assets/fonts/bungee-regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Permanent Marker';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../assets/fonts/permanent-marker-regular.ttf') format('truetype');
+}
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; overflow-x: hidden; }

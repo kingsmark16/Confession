@@ -6,7 +6,7 @@ I actually started building this webpage on February 13, 2026, right after I rea
 
 I still remember the first time we met. What caught my attention right away was your smile and your energy. It felt so natural and warm. ✨ And your eyes… especially with your glasses on, I don’t know, they just looked perfect to me. 🤍
 
-Then about a week later, that moment happened. You know it.When you suddenly startled me (ginulat mo ako) instead of the kid. 😳 I wasn’t even sure if it was really an accident, or if you did it on purpose just to tease me. But honestly, that was the exact moment something changed for me. 💫 That was when I started falling for you. 💖
+Then about a week later, that moment happened. You know it.When you accidentaly startled me (ginulat mo ako) instead of the kid. 😳 I wasn’t even sure if it was really an accident, or if you did it on purpose just to tease me. But honestly, that was the exact moment something changed for me. 💫 That was when I started falling for you. 💖
 
 Since then, you’ve been on my mind all the time, randomly and unexpectedly, no matter what I’m doing. And it’s strange, but in a good way. You made my life feel exciting again. 🌸 Waking up in the morning felt different, like I had something to look forward to. Like I had a reason to go to work, because there was a chance I’d see you. 😊
 

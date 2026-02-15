@@ -5,12 +5,14 @@ export function useAutoHideNav() {
   const lastScrollY = useRef(0)
   const framePending = useRef(false)
   const answerTransitionPending = useRef(false)
+  const ignoreScrollUntil = useRef(0)
 
   useEffect(() => {
     lastScrollY.current = window.scrollY
 
     const hideForAnswerTransition = () => {
       answerTransitionPending.current = true
+      ignoreScrollUntil.current = performance.now() + 1000
       setIsVisible(false)
     }
 
@@ -24,7 +26,9 @@ export function useAutoHideNav() {
         const currentScrollY = Math.max(window.scrollY, 0)
         const scrollDelta = currentScrollY - lastScrollY.current
 
-        if (answerTransitionPending.current) {
+        if (performance.now() < ignoreScrollUntil.current) {
+          lastScrollY.current = currentScrollY
+        } else if (answerTransitionPending.current) {
           if (currentScrollY <= 24 || scrollDelta < -4) {
             answerTransitionPending.current = false
             setIsVisible(true)

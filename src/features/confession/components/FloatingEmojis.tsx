@@ -4,7 +4,7 @@ import type { LucideIcon } from 'lucide-react'
 
 const romanticIcons: LucideIcon[] = [Heart, Sparkles, Flower2, Gift, HeartHandshake, Star, Heart, Sparkles, Flower2, Heart]
 
-export function FloatingEmojis() {
+export function FloatingEmojis({ isPaused = false }: { isPaused?: boolean }) {
   const [isScrolling, setIsScrolling] = useState(false)
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function FloatingEmojis() {
   }, [])
 
   return (
-    <div aria-hidden="true" className={`emoji-sky ${isScrolling ? 'is-scrolling' : ''}`}>
+    <div aria-hidden="true" className={`emoji-sky ${isScrolling ? 'is-scrolling' : ''} ${isPaused ? 'is-paused' : ''}`}>
       {romanticIcons.map((Icon, index) => (
         <span key={`${Icon.displayName ?? 'romantic-icon'}-${index}`}>
           <Icon fill={Icon === Heart ? 'currentColor' : 'none'} strokeWidth={1.8} />

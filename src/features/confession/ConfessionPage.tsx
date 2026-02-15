@@ -13,6 +13,7 @@ import { useRevealOnScroll } from './hooks/useRevealOnScroll'
 export function ConfessionPage() {
   const [answer, setAnswer] = useState<'yes' | 'no' | null>(null)
   const [responseId, setResponseId] = useState<string | null>(null)
+  const [isGardenActive, setIsGardenActive] = useState(false)
   const isVisible = useRevealOnScroll()
 
   const saveAnswer = async (nextAnswer: 'yes' | 'no') => {
@@ -28,15 +29,15 @@ export function ConfessionPage() {
   }
 
   return (
-    <div className="site-shell">
+    <div className={`site-shell ${isGardenActive ? 'is-garden-active' : ''}`}>
       <a className="skip-link" href="#main-content">Skip to the confession</a>
-      <FloatingEmojis />
+      <FloatingEmojis isPaused={isGardenActive} />
       <HeroSection />
       <main id="main-content">
         <ConfessionLetter isVisible={isVisible('confession-card')} />
         <MemoryGallery isVisible={isVisible} />
         <ReasonsSection isVisible={isVisible} />
-        <FinalCta isVisible={isVisible('finale-card')} onAnswer={saveAnswer} />
+        <FinalCta isVisible={isVisible('finale-card')} onAnswer={saveAnswer} onGardenChange={setIsGardenActive} />
         <ReplySection answer={answer} responseId={responseId} onResponseCreated={setResponseId} />
       </main>
       <SiteFooter />

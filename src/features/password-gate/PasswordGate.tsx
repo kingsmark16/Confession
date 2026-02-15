@@ -51,7 +51,7 @@ export function PasswordGate({ onUnlock }: PasswordGateProps) {
         <h1 id="password-gate-title">BEFORE YOU ENTER...</h1>
         <p id="password-gate-description">Here’s your clue: <strong className="password-gate-clue">The password is your name 🥳🥳</strong>.</p>
 
-        <p className="password-gate-recipient-note">Only the right girl can open this little secret. 💌</p>
+        <p className="password-gate-recipient-note">Only the right girl can open this letter. 💌</p>
         <form className="password-gate-form" onSubmit={handleSubmit}>
           <label htmlFor="site-password">SECRET PASSWORD</label>
           <div className="password-gate-input-wrap">

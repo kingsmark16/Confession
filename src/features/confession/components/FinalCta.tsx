@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { Heart, HeartHandshake, Sparkles, X } from 'lucide-react'
-import type { MouseEvent, PointerEvent } from 'react'
+import type { MouseEvent } from 'react'
 import { RomanticGarden } from '../garden/RomanticGarden'
 
-type FinalCtaProps = { isVisible: boolean; onAnswer: (answer: 'yes' | 'no') => Promise<void> }
+type FinalCtaProps = { isVisible: boolean; onAnswer: (answer: 'yes' | 'no') => Promise<void>; onGardenChange: (isActive: boolean) => void }
 
-export function FinalCta({ isVisible, onAnswer }: FinalCtaProps) {
+export function FinalCta({ isVisible, onAnswer, onGardenChange }: FinalCtaProps) {
   const [announcement, setAnnouncement] = useState('')
   const [isAccepted, setIsAccepted] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const [isRejected, setIsRejected] = useState(false)
-  const [noAttempts, setNoAttempts] = useState(0)
+  const [pendingAnswer, setPendingAnswer] = useState<'yes' | 'no' | null>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
   const changeMindRef = useRef<HTMLButtonElement>(null)
 
@@ -31,6 +31,10 @@ export function FinalCta({ isVisible, onAnswer }: FinalCtaProps) {
   }, [isRejected])
 
   useEffect(() => {
+    onGardenChange(isAccepted)
+  }, [isAccepted, onGardenChange])
+
+  useEffect(() => {
     if (!isAccepted && !isRejected) return
 
     const frameId = window.requestAnimationFrame(() => {
@@ -43,29 +47,23 @@ export function FinalCta({ isVisible, onAnswer }: FinalCtaProps) {
     return () => window.cancelAnimationFrame(frameId)
   }, [isAccepted, isRejected])
 
-  const sayYes = async () => {
-    setAnnouncement('Yes selected. A garden is blooming for you.')
-    window.dispatchEvent(new Event('confession-answer-transition'))
-    setIsAccepted(true)
-    setIsRejected(false)
+  const confirmAnswer = async () => {
+    if (!pendingAnswer) return
+    const nextAnswer = pendingAnswer
+    setPendingAnswer(null)
     setIsConfirmOpen(false)
-    try {
-      await onAnswer('yes')
-    } catch (error) {
-      console.error('Could not save YES response', error)
-      setAnnouncement('Your answer could not be saved right now.')
+    setAnnouncement(nextAnswer === 'yes' ? 'Yes selected. A garden is blooming for you.' : 'No selected. Thank you for being honest.')
+    window.dispatchEvent(new Event('confession-answer-transition'))
+    if (nextAnswer === 'yes') {
+      setIsAccepted(true)
+      setIsRejected(false)
+    } else {
+      setIsRejected(true)
     }
-  }
-
-  const confirmNo = async () => {
-    setAnnouncement('No selected. Thank you for being honest.')
-    window.dispatchEvent(new Event('confession-answer-transition'))
-    setIsRejected(true)
-    setIsConfirmOpen(false)
     try {
-      await onAnswer('no')
+      await onAnswer(nextAnswer)
     } catch (error) {
-      console.error('Could not save NO response', error)
+      console.error(`Could not save ${nextAnswer.toUpperCase()} response`, error)
       setAnnouncement('Your answer could not be saved right now.')
     }
   }
@@ -73,25 +71,12 @@ export function FinalCta({ isVisible, onAnswer }: FinalCtaProps) {
   const changeMyMind = () => {
     setAnnouncement('The question is ready again.')
     setIsRejected(false)
-    setNoAttempts(0)
   }
 
-  const advanceNoAttempt = () => setNoAttempts((current) => Math.min(2, current + 1))
-
-  const handleNoClick = () => {
-    if (noAttempts < 2) {
-      advanceNoAttempt()
-      return
-    }
-
+  const requestConfirmation = (nextAnswer: 'yes' | 'no') => {
+    setPendingAnswer(nextAnswer)
     setIsConfirmOpen(true)
   }
-
-  const handleNoPointerEnter = (event: PointerEvent<HTMLButtonElement>) => {
-    if (event.pointerType === 'mouse' && noAttempts < 2) advanceNoAttempt()
-  }
-
-  const noButtonMotion = noAttempts === 1 ? 'is-dodging' : noAttempts === 2 ? 'is-returning' : ''
 
   const handleBackdropClick = (event: MouseEvent<HTMLDialogElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect()
@@ -124,8 +109,8 @@ export function FinalCta({ isVisible, onAnswer }: FinalCtaProps) {
             <h2>IS THERE A CHANCE FOR US?</h2>
             <p className="finale-copy">Could this confession be the beginning of something real between us?</p>
             <div aria-label="Your answer" className="answer-buttons" role="group">
-              <button onClick={sayYes} type="button">YES, THERE IS!</button>
-              <button className={`no-answer-button ${noButtonMotion}`} onClick={handleNoClick} onPointerEnter={handleNoPointerEnter} type="button">NO</button>
+              <button onClick={() => requestConfirmation('yes')} type="button">YES, THERE IS!</button>
+              <button className="no-answer-button" onClick={() => requestConfirmation('no')} type="button">NO</button>
             </div>
           </>
         )}
@@ -147,11 +132,11 @@ export function FinalCta({ isVisible, onAnswer }: FinalCtaProps) {
           <button aria-label="Close confirmation" className="answer-confirm-close" onClick={() => setIsConfirmOpen(false)} type="button"><X aria-hidden="true" /></button>
           <HeartHandshake aria-hidden="true" className="answer-confirm-heart" />
           <p className="answer-confirm-eyebrow">YOUR HEART, YOUR CHOICE</p>
-          <h2 id="answer-confirm-title">ARE YOU SURE?</h2>
-          <p id="answer-confirm-description">Your answer is safe with me. You can take another moment, or confirm how you truly feel.</p>
+          <h2 id="answer-confirm-title">{pendingAnswer === 'yes' ? 'CHOOSE US?' : 'ARE YOU SURE?'}</h2>
+          <p id="answer-confirm-description">{pendingAnswer === 'yes' ? 'Take one more breath, then confirm that you want to let this love bloom.' : 'Your answer is safe with me. You can take another moment, or confirm how you truly feel.'}</p>
           <div className="answer-confirm-actions">
             <button autoFocus onClick={() => setIsConfirmOpen(false)} type="button">LET ME THINK AGAIN</button>
-            <button onClick={confirmNo} type="button">YES, I&apos;M SURE</button>
+            <button onClick={confirmAnswer} type="button">{pendingAnswer === 'yes' ? 'YES, LET IT BLOOM' : 'YES, I&apos;M SURE'}</button>
           </div>
         </div>
       </dialog>

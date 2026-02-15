@@ -28,15 +28,31 @@ export async function createResponse(answer: 'yes' | 'no' | null, message?: stri
   if (!supabase) return null
 
   const id = crypto.randomUUID()
+  const anonymousId = getAnonymousId()
   const draft = { answer, message: message ?? null }
-  const { error } = await supabase.from('responses').upsert({
+  const { error } = await supabase.from('responses').insert({
     id,
-    anonymous_id: getAnonymousId(),
+    anonymous_id: anonymousId,
     answer,
     message: draft.message,
-  }, { onConflict: 'anonymous_id' })
+    first_answer: answer,
+    answer_update_count: 0,
+  })
 
-  if (error) throw error
+  if (error && error.code !== '23505') throw error
+  if (error?.code === '23505') {
+    const { error: firstAnswerError } = await supabase.from('responses').update({
+      first_answer: answer,
+      answer_update_count: 0,
+    }).eq('anonymous_id', anonymousId).is('first_answer', null).is('answer', null)
+    if (firstAnswerError) throw firstAnswerError
+
+    const { error: updateError } = await supabase.from('responses').update({
+      answer,
+      message: draft.message,
+    }).eq('anonymous_id', anonymousId)
+    if (updateError) throw updateError
+  }
   writeDraft(draft)
   window.localStorage.setItem(responseIdKey, id)
   return id
@@ -44,11 +60,22 @@ export async function createResponse(answer: 'yes' | 'no' | null, message?: stri
 
 export async function updateResponse(id: string, answer: 'yes' | 'no') {
   if (!supabase) return
-  const draft = { ...readDraft(), answer }
+  const previousDraft = readDraft()
+  const draft = { ...previousDraft, answer }
+
+  if (previousDraft.answer === null) {
+    const { error: firstAnswerError } = await supabase.from('responses').update({
+      first_answer: answer,
+      answer_update_count: 0,
+    }).eq('anonymous_id', getAnonymousId()).is('first_answer', null).is('answer', null)
+    if (firstAnswerError) throw firstAnswerError
+  }
+
   const { error } = await supabase.from('responses').upsert({
     id,
     anonymous_id: getAnonymousId(),
     ...draft,
+    ...(previousDraft.answer === null ? { first_answer: answer, answer_update_count: 0 } : {}),
   }, { onConflict: 'anonymous_id' })
   if (error) throw error
   writeDraft(draft)

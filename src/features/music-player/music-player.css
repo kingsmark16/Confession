@@ -38,5 +38,41 @@
 .music-love-layer span:nth-child(9) { inset-inline-start: 8%; animation-delay: -6s; }.music-love-layer span:nth-child(10) { inset-inline-start: 21%; animation-delay: -2s; }.music-love-layer span:nth-child(11) { inset-inline-start: 36%; animation-delay: -5s; }.music-love-layer span:nth-child(12) { inset-inline-start: 51%; animation-delay: -1s; }.music-love-layer span:nth-child(13) { inset-inline-start: 65%; animation-delay: -4s; }.music-love-layer span:nth-child(14) { inset-inline-start: 79%; animation-delay: -6.5s; }.music-love-layer span:nth-child(15) { inset-inline-start: 91%; animation-delay: -3s; }.music-love-layer span:nth-child(16) { inset-inline-start: 14%; animation-delay: -7s; animation-duration: 9s; }.music-love-layer span:nth-child(17) { inset-inline-start: 58%; animation-delay: -7.5s; animation-duration: 9s; }.music-love-layer span:nth-child(18) { inset-inline-start: 84%; animation-delay: -8s; animation-duration: 9s; }
 @keyframes music-love-rise { from { transform: translateY(0) rotate(-8deg) scale(0.8); opacity: 0; } 15% { opacity: 0.8; } to { transform: translateY(-115vh) rotate(18deg) scale(1.15); opacity: 0; } }
 @media (max-width: 42rem) { .music-dialog { width: min(calc(100% - var(--space-2)), 38rem); }.music-panel { padding: var(--space-3); }.music-heading { padding-inline-end: var(--space-4); }.music-heading-icon { width: 3rem; height: 3rem; }.music-controls { gap: 0.25rem; }.music-controls button { width: 3rem; height: 3rem; }.music-controls .music-play { width: 4rem; height: 4rem; }.song-list button { gap: var(--space-1); }.song-list button em { display: none; }.music-love-layer span:nth-child(10), .music-love-layer span:nth-child(12), .music-love-layer span:nth-child(14), .music-love-layer span:nth-child(16), .music-love-layer span:nth-child(18) { display: none; } }
+@media (max-width: 26rem) {
+  .music-dialog {
+    width: calc(100vw - 0.75rem);
+    max-width: none;
+    max-height: calc(100svh - 0.75rem);
+    overflow: hidden;
+  }
+
+  .music-panel {
+    box-sizing: border-box;
+    max-height: calc(100svh - 0.75rem);
+    padding: 0.65rem;
+    overflow: hidden;
+  }
+
+  .music-close { width: 2.2rem; height: 2.2rem; }
+  .music-close svg { width: 1.25rem; height: 1.25rem; }
+  .music-heading { padding-inline-end: 2.75rem; gap: 0.5rem; }
+  .music-heading-icon { width: 2.4rem; height: 2.4rem; }
+  .music-heading-icon svg { width: 1.35rem; height: 1.35rem; }
+  .music-eyebrow { font-size: 0.72rem; }
+  .music-heading h2 { font-size: clamp(1.15rem, 7vw, 1.65rem); }
+  .music-panel > p { margin-block: 0.45rem; font-size: 0.78rem; line-height: 1.15; }
+  .now-playing { min-height: 3.35rem; padding: 0.55rem; }
+  .now-playing strong { font-size: 1rem; }
+  .music-controls { margin-block: 0.55rem; gap: 0.2rem; }
+  .music-controls button { width: 2.45rem; height: 2.45rem; }
+  .music-controls .music-play { width: 3.15rem; height: 3.15rem; }
+  .music-controls svg { width: 1.25rem; height: 1.25rem; }
+  .song-list { max-height: none; gap: 0.25rem; overflow: visible; }
+  .song-list button { min-height: 2.15rem; padding: 0.3rem 0.45rem; gap: 0.4rem; }
+  .song-list button span { font-size: 0.52rem; }
+  .song-list button strong { font-size: 0.78rem; }
+  .music-error { padding: 0.45rem; font-size: 0.72rem; }
+  .music-hint { margin-block: 0.45rem 0 !important; font-size: 0.68rem !important; line-height: 1.1; }
+}
 @media (max-height: 52rem) and (min-width: 43rem) { .music-dialog { max-height: calc(100vh - 2rem); }.music-panel { max-height: none; padding: var(--space-3); overflow: visible; }.music-heading-icon { width: 3rem; height: 3rem; }.music-heading h2 { font-size: 2rem; }.music-panel > p { margin-block: var(--space-2); font-size: 0.95rem; }.now-playing { min-height: 4.5rem; padding: var(--space-2); }.music-controls { margin-block: var(--space-2); }.music-controls button { width: 3rem; height: 3rem; }.music-controls .music-play { width: 3.75rem; height: 3.75rem; }.song-list { max-height: none; overflow: visible; }.song-list button { min-height: 2.5rem; padding-block: 0.35rem; }.music-hint { margin-block: var(--space-2) 0; } }
 @media (prefers-reduced-motion: reduce) { .music-love-layer { display: none; } }
