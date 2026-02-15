@@ -11,7 +11,7 @@ export function ReplySection({ answer, responseId, onResponseCreated }: ReplySec
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!supabase) {
+    if (!supabase || !message.trim()) {
       setStatus('error')
       return
     }
@@ -52,8 +52,7 @@ export function ReplySection({ answer, responseId, onResponseCreated }: ReplySec
             placeholder="Tell me what is in your heart..."
             value={message}
           />
-          <p className="reply-help" id="reply-help">This note stays here on this page for this moment.</p>
-          <button disabled={status === 'submitting'} type="submit">
+          <button disabled={!message.trim() || status === 'submitting'} type="submit">
             {status === 'submitting' ? 'SENDING NOTE...' : status === 'success' ? 'NOTE SENT' : 'LEAVE YOUR NOTE'}
           </button>
         </form>

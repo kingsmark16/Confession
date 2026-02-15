@@ -60,7 +60,7 @@ export function MusicPlayerDialog({ currentIndex, currentSong, error, isOpen, is
             <h2 id="music-player-title">OUR LOVE SONGS</h2>
           </div>
         </div>
-        <p id="music-player-description">A handpicked soundtrack for this confession. Pick a favorite or let every song play in order.</p>
+        <p id="music-player-description">Pick a favorite or let every song play in order.</p>
 
         <div aria-live="polite" className="now-playing">
           <span>{isPlaying ? 'NOW PLAYING' : 'READY TO PLAY'}</span>
