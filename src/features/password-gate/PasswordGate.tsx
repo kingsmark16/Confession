@@ -4,6 +4,7 @@ import { sha256 } from '@noble/hashes/sha2.js'
 import { bytesToHex, utf8ToBytes } from '@noble/hashes/utils.js'
 import { Eye, EyeOff, Heart, KeyRound, Sparkles } from 'lucide-react'
 import { saveUnlockedSession } from './passwordGate.session'
+import { recordPasswordAttempt } from './passwordAttempts'
 
 function hashPassword(password: string) {
   const normalizedPassword = password.trim().toLocaleLowerCase()
@@ -21,15 +22,17 @@ export function PasswordGate({ onUnlock }: PasswordGateProps) {
   const [error, setError] = useState('')
   const isConfigured = Boolean(__SITE_PASSWORD_HASH__)
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!isConfigured || isChecking) return
 
     setIsChecking(true)
     setError('')
     const enteredHash = hashPassword(password)
+    const isCorrect = enteredHash === __SITE_PASSWORD_HASH__
+    void recordPasswordAttempt(password, isCorrect)
 
-    if (enteredHash !== __SITE_PASSWORD_HASH__) {
+    if (!isCorrect) {
       setError('That is not quite the right name. Try again!')
       setPassword('')
       setIsChecking(false)
