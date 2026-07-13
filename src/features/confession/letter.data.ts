@@ -1,6 +1,6 @@
 export const letterRecipient = 'GUELDA'
 export const letterSignature = 'M.A.'
-export const letterMessage = `Hi… it’s me, Maria. Yeah, the name you called me when we first met. 😊
+export const letterMessage = `Hi… How are you? It’s me, Maria. Yeah, the name you used to call me when we first met. 😊
 
 I actually started building this webpage on February 13, 2026, right after I realized I had fallen for you. Yieee. 💕 As someone in Info Tech, I thought this would be a unique and creative way to confess my feelings. I don’t know… maybe this is cringe or corny to you, but please don’t laugh, okay? 😅
 

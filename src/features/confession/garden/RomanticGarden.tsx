@@ -318,9 +318,9 @@ export function RomanticGarden() {
         ref={stageRef}
       >
         <span className="garden-love-note">
-          <span>WHOOOAAAA!!! NO REFUNDS, NO EXCHANGES HAHAHA</span>
-          <strong>I AM SO HAPPY YOU GAVE ME A CHANCE!</strong>
-          <span className="garden-celebration">MAGNONOTIFY TO SAKIN! 😍🥰</span>
+          <span>YAAAAY!!! YOU SAID YES!!! MY HEART JUST DID A HAPPY LITTLE DANCE! 💃💖</span>
+          <strong>I AM SO HAPPY YOU GAVE US A CHANCE!</strong>
+          <span className="garden-celebration">HERE&apos;S TO LAUGHTER, BUTTERFLIES, AND A LOVE STORY WE GET TO WRITE TOGETHER! 😍✨</span>
         </span>
 
         <div className="bouquet-stage">

@@ -147,7 +147,7 @@ main, .site-footer { position: relative; z-index: 1; }
 @keyframes no-button-return { from { opacity: 0.65; transform: translate3d(var(--space-7), calc(var(--space-7) * -1), 0) rotate(5deg); } to { opacity: 1; transform: translate3d(0, 0, 0) rotate(0); } }
 @keyframes rejection-content-enter { from { opacity: 0; transform: translate3d(0, var(--space-4), 0) scale(0.82) rotate(-2deg); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0); } }
 @media (max-width: 42rem) { .finale-card { padding: var(--space-5) var(--space-3); }.finale-copy { margin-block-start: 0; }.answer-buttons { flex-direction: column; }.answer-buttons button { width: min(100%, 18rem); }.answer-confirm-panel { padding: var(--space-4) var(--space-3); }.answer-confirm-heart { width: var(--space-5); height: var(--space-5); }.answer-confirm-actions { flex-direction: column; }.answer-confirm-actions button { width: 100%; } }
-@media (max-width: 42rem) { .answer-buttons .no-answer-button { touch-action: manipulation; }.answer-buttons .no-answer-button:not(.is-dodging):not(.is-returning):hover, .answer-buttons .no-answer-button:not(.is-dodging):not(.is-returning):active { background: var(--paper); box-shadow: var(--shadow); transform: none; } }
+@media (max-width: 42rem) { .answer-buttons .no-answer-button { touch-action: manipulation; } }
 @media (max-width: 42rem) { .rejection-content { min-height: 26rem; }.rejection-copy { padding: var(--space-2); }.change-mind-button { width: min(100%, 18rem); } }
 @media (max-width: 26rem) {
   .finale-card:not(.is-garden):not(.is-rejected) {

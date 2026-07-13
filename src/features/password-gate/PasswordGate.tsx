@@ -45,9 +45,8 @@ export function PasswordGate({ onUnlock }: PasswordGateProps) {
       <div aria-hidden="true" className="password-gate-shape password-gate-shape-left"><Heart fill="currentColor" /></div>
       <div aria-hidden="true" className="password-gate-shape password-gate-shape-right"><Sparkles /></div>
       <section aria-describedby="password-gate-description" aria-labelledby="password-gate-title" className="password-gate-card">
-        <p className="password-gate-sticker">PRIVATE LOVE LETTER!</p>
+        <p className="password-gate-sticker">LETTER 4 U!</p>
         <div aria-hidden="true" className="password-gate-icon"><KeyRound /></div>
-        <p className="password-gate-eyebrow">A LITTLE SECRET BETWEEN US</p>
         <h1 id="password-gate-title">BEFORE YOU ENTER...</h1>
         <p id="password-gate-description">Here’s your clue: <strong className="password-gate-clue">The password is your name 🥳🥳</strong>.</p>
 

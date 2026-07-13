@@ -136,7 +136,7 @@ export function FinalCta({ isVisible, onAnswer, onGardenChange }: FinalCtaProps)
           <p id="answer-confirm-description">{pendingAnswer === 'yes' ? 'Take one more breath, then confirm that you want to let this love bloom.' : 'Your answer is safe with me. You can take another moment, or confirm how you truly feel.'}</p>
           <div className="answer-confirm-actions">
             <button autoFocus onClick={() => setIsConfirmOpen(false)} type="button">LET ME THINK AGAIN</button>
-            <button onClick={confirmAnswer} type="button">{pendingAnswer === 'yes' ? 'YES, LET IT BLOOM' : 'YES, I&apos;M SURE'}</button>
+            <button onClick={confirmAnswer} type="button">{pendingAnswer === 'yes' ? 'YES, LET IT BLOOM' : 'YES, I\'M SURE'}</button>
           </div>
         </div>
       </dialog>
