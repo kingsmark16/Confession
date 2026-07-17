@@ -2,6 +2,8 @@
 
 A responsive, pop art confession page built with React and TypeScript. It combines a paginated love letter, music player, animated romantic garden, memory gallery, final yes or no moment, and an optional message form backed by Supabase.
 
+LIVE: https://confession4u.mcanghel.fun
+
 ## Features
 
 - Pop art responsive layout with animated decorative icons
