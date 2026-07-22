@@ -7,7 +7,6 @@ import { HeroSection } from './components/HeroSection'
 import { MemoryGallery } from './components/MemoryGallery'
 import { ReasonsSection } from './components/ReasonsSection'
 import { ReplySection } from './components/ReplySection'
-import { VisitorLocationControl } from './components/VisitorLocationControl'
 import { createResponse, getStoredResponseId, updateResponse } from './lib/responses'
 import { useRevealOnScroll } from './hooks/useRevealOnScroll'
 
@@ -40,7 +39,6 @@ export function ConfessionPage() {
         <ReasonsSection isVisible={isVisible} />
         <FinalCta isVisible={isVisible('finale-card')} onAnswer={saveAnswer} onGardenChange={setIsGardenActive} />
         <ReplySection answer={answer} responseId={responseId} onResponseCreated={setResponseId} />
-        <VisitorLocationControl />
       </main>
       <SiteFooter />
     </div>

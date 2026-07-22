@@ -97,15 +97,6 @@ main, .site-footer { position: relative; z-index: 1; }
 .reply-status { min-height: 1.4em; margin: var(--space-2) 0 0; color: var(--pop-red); font-family: var(--font-display); font-size: clamp(0.75rem, 1.6vw, 1rem); }
 @media (max-height: 60rem) and (min-width: 43rem) { .reply-section { padding-block: var(--space-2); }.reply-card { padding: var(--space-3) var(--space-4); transform: none; }.reply-card h2 { font-size: clamp(1.7rem, 4vw, 2.6rem); }.reply-intro { margin-block-end: var(--space-2); }.reply-form textarea { min-height: 7rem; }.reply-status { margin-block-start: var(--space-1); } }
 @media (max-width: 42rem) { .reply-card { width: 100%; padding: var(--space-3) var(--space-2); transform: none; }.reply-card h2 { overflow-wrap: anywhere; font-size: clamp(1.6rem, 8vw, 2.5rem); }.reply-form textarea { min-height: 8rem; }.reply-form button { width: min(100%, 18rem); } }
-.location-section { display: grid; min-width: 0; padding-block: var(--space-3) var(--space-6); place-items: center; }
-.location-card { width: min(100%, 42rem); min-width: 0; padding: clamp(var(--space-3), 4vw, var(--space-5)); border: var(--border); background: var(--pop-yellow); box-shadow: var(--shadow-small); text-align: center; transform: rotate(-1deg); }
-.location-eyebrow { width: fit-content; margin: 0 auto var(--space-2); padding: var(--space-1) var(--space-2); background: var(--pop-green); color: var(--ink); font-family: var(--font-display); font-size: clamp(0.7rem, 1.6vw, 1rem); }
-.location-card h2 { margin: 0 0 var(--space-2); font-family: var(--font-display); font-size: clamp(1.5rem, 4vw, 2.7rem); line-height: 1; }
-.location-copy { max-width: 34rem; margin: 0 auto var(--space-3); font-size: clamp(0.95rem, 2vw, 1.2rem); line-height: 1.2; }
-.location-button { padding: var(--space-2) var(--space-3); border: var(--border); background: var(--pop-red); color: var(--paper); box-shadow: var(--shadow-small); font-family: var(--font-display); font-size: clamp(0.75rem, 1.6vw, 1rem); transition: background-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease, transform var(--duration-fast) ease; }
-.location-button:hover:not(:disabled) { background: var(--ink); box-shadow: none; transform: translate(var(--space-1), var(--space-1)); }
-.location-button:disabled { cursor: not-allowed; opacity: 0.55; }
-.location-status { min-height: 1.4em; margin: var(--space-2) 0 0; color: var(--ink); font-family: var(--font-display); font-size: clamp(0.65rem, 1.5vw, 0.85rem); }
 .finale-card > *:not(.finale-sparkles) { position: relative; z-index: 1; }
 .finale-card > .answer-buttons { position: static; }
 .finale-eyebrow { width: fit-content; margin: 0 auto var(--space-2); padding: var(--space-1) var(--space-2); background: var(--pop-red); color: var(--paper); font-family: var(--font-display); font-size: clamp(0.75rem, 1.5vw, 1rem); transform: rotate(-2deg); }

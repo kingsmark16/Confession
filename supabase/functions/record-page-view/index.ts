@@ -4,7 +4,6 @@ import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
 type PageViewPayload = {
   pageKey?: unknown
   anonymousId?: unknown
-  location?: unknown
 }
 
 type LocationResponse = {
@@ -16,16 +15,6 @@ type LocationResponse = {
 type VisitorLocation = {
   city: string
   country: string
-}
-
-function parseClientLocation(value: unknown): VisitorLocation | null {
-  if (!value || typeof value !== 'object') return null
-
-  const location = value as Record<string, unknown>
-  const country = typeof location.country === 'string' ? location.country.trim().slice(0, 120) : ''
-  const city = typeof location.city === 'string' ? location.city.trim().slice(0, 120) : ''
-
-  return country && city ? { country, city } : null
 }
 
 const jsonHeaders = {
@@ -127,13 +116,12 @@ Deno.serve(async (request) => {
     }
 
     const now = new Date().toISOString()
-    const clientLocation = parseClientLocation(payload.location)
-    if (!clientLocation && isRateLimited(payload.anonymousId)) {
+    if (isRateLimited(payload.anonymousId)) {
       return jsonResponse({ ok: false }, 429)
     }
 
     const visitorIp = getVisitorIp(request)
-    const location = clientLocation ?? (visitorIp ? await getVisitorLocation(visitorIp) : null)
+    const location = visitorIp ? await getVisitorLocation(visitorIp) : null
 
     const { error: insertError } = await admin.from('views').insert({
       page_key: payload.pageKey,
