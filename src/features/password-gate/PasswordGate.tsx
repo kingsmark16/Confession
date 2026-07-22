@@ -62,6 +62,7 @@ export function PasswordGate({ onUnlock }: PasswordGateProps) {
               aria-invalid={Boolean(error)}
               autoComplete="current-password"
               autoFocus
+              placeholder='Enter the password here'
               disabled={!isConfigured || isChecking}
               id="site-password"
               onChange={(event) => {

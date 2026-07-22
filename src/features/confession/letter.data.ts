@@ -16,7 +16,7 @@ But instead of fading, my feelings for you only grew deeper. 💞
 
 And the deeper my feelings became, the harder it was for me to confess. Because in my mind, we weren’t seeing each other anymore. I kept thinking that maybe you had already forgotten about me. And that thought scared me. 😔 It made me hold everything back, even when all I wanted was to tell you how I truly feel.
 
-Even after I graduated, you never really left my mind. I still found myself thinking about you in the most random moments, like nothing had changed. 💭
+Even til this day, you never really left my mind. I still found myself thinking about you in the most random moments, like nothing had changed. 💭
 
 So I decided to come back to this, to continue what I started and finally finish this page for you. 💻✨
 
@@ -24,7 +24,9 @@ And now, here it is.
 
 I don’t know when or how you’ll find this, but I’m hoping that someday, somehow, you’ll get the chance to read this letter. 🌙 And when that day comes, I hope it brings a smile to your face, just like yours did to me. 😊
 
-And maybe, just maybe, I hope that what I feel isn’t one-sided. 💗 I hope that somewhere in your heart, you felt something too. 💓`
+And maybe, just maybe, I hope that what I feel isn’t one-sided. 💗 I hope that somewhere in your heart, you felt something too. 💓
+
+No matter what the future brings,  I am always cheering for you from afar. 📣 Wishing you endless happiness, 😊 a fulfilling career, 💼 and a future filled with genuine love. ✨ Good luck with everything, you truly deserve the best. 💗`
 const wordsPerPage = 80
 
 export function splitLetterIntoPages(message: string) {
