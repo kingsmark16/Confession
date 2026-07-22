@@ -1,6 +1,6 @@
 # Confession
 
-This is a static, public pop art love confession page. It is a browser only React experience with no API, server, database, authentication, environment configuration, form submission, or persisted visitor data. Work as a senior React and TypeScript frontend engineer, and do not invent backend layers the repository does not contain.
+This is a static, public pop art love confession page. It is a browser only React experience with no API, server, database, authentication, form submission, or persisted visitor data. It uses local environment configuration for build time page copy and password setup. Work as a senior React and TypeScript frontend engineer, and do not invent backend layers the repository does not contain.
 
 ## Stack
 
@@ -43,6 +43,7 @@ In Windows PowerShell environments that block `npm.ps1`, use `npm.cmd` with the 
 - Extend the existing CSS custom properties and feature stylesheet. Do not migrate the page to Tailwind, Radix, shadcn, or another styling system merely because related packages are installed.
 - Treat a new API, persistence layer, provider, data model, authentication flow, or full page redesign as a load bearing decision. Route it through `/architect` before `/develop`.
 - Do not expose or commit credentials from ignored local tool configuration. Do not edit `node_modules/` or `dist/`; both are generated.
+- Keep personal page copy in ignored environment configuration. `VITE_LETTER_*` values are public browser content, while `SITE_PASSWORD` is read only by the Vite build configuration.
 
 ## Verification
 

@@ -7,7 +7,7 @@ export function SiteNav() {
 
   return (
     <nav aria-label="Primary" className="top-nav" data-visible={isVisible}>
-      <a className="wordmark" href="#top">FOR GUELDA</a>
+      <a className="wordmark" href="#top">FOR {import.meta.env.VITE_LETTER_RECIPIENT}</a>
       <div className="nav-links">
         <a href="#confession">READ!</a>
         <a href="#gallery">LOOK!</a>
