@@ -7,8 +7,9 @@ type PageViewPayload = {
 }
 
 type LocationResponse = {
+  success?: unknown
   city?: unknown
-  country_name?: unknown
+  country?: unknown
 }
 
 type VisitorLocation = {
@@ -45,7 +46,7 @@ async function getVisitorLocation(ip: string): Promise<VisitorLocation | null> {
   const timeoutId = setTimeout(() => controller.abort(), 3000)
 
   try {
-    const response = await fetch(`https://ipapi.co/${encodeURIComponent(ip)}/json/`, {
+    const response = await fetch(`https://ipwho.is/${encodeURIComponent(ip)}?fields=success,country,city`, {
       headers: { Accept: 'application/json' },
       signal: controller.signal,
     })
@@ -53,7 +54,9 @@ async function getVisitorLocation(ip: string): Promise<VisitorLocation | null> {
     if (!response.ok) return null
 
     const data = await response.json() as LocationResponse
-    const country = typeof data.country_name === 'string' ? data.country_name.trim() : ''
+    if (data.success !== true) return null
+
+    const country = typeof data.country === 'string' ? data.country.trim() : ''
     const city = typeof data.city === 'string' ? data.city.trim() : ''
 
     return country && city ? { country, city } : null
@@ -128,7 +131,9 @@ Deno.serve(async (request) => {
       city: location?.city ?? null,
     })
 
-    if (!insertError) return jsonResponse({ ok: true })
+    if (!insertError) {
+      return jsonResponse({ ok: true })
+    }
     if (insertError.code !== '23505') {
       console.error('Could not insert page view', insertError)
       return jsonResponse({ ok: false }, 500)

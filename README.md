@@ -148,7 +148,7 @@ The Supabase publishable key is safe to use in a browser. Never add a Supabase s
 
 ### Approximate visitor location
 
-Page views invoke the `record-page-view` Supabase Edge Function. The function reads the visitor's forwarded public IP only in memory, requests an approximate location from `ipapi.co`, and stores only the returned country and city in `public.views`. The app does not request GPS permission and does not store the raw IP address, exact coordinates, or full provider response. The provider still receives the visitor's public IP as part of the lookup request, so disclose this approximate location processing before public launch.
+Page views invoke the `record-page-view` Supabase Edge Function. The function reads the visitor's forwarded public IP only in memory, requests only an approximate country and city from `ipwho.is`, and stores only those fields in `public.views`. The app does not request GPS permission and does not store the raw IP address, exact coordinates, or full provider response. The provider still receives the visitor's public IP as part of the lookup request, so disclose this approximate location processing before public launch.
 
 Run [docs/supabase/views-location.sql](docs/supabase/views-location.sql) in the Supabase SQL Editor to add the nullable `country` and `city` columns to an existing `public.views` table. Location failures are ignored and never block the page.
 
