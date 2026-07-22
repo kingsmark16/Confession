@@ -44,6 +44,7 @@ In Windows PowerShell environments that block `npm.ps1`, use `npm.cmd` with the 
 - Treat a new API, persistence layer, provider, data model, authentication flow, or full page redesign as a load bearing decision. Route it through `/architect` before `/develop`.
 - Do not expose or commit credentials from ignored local tool configuration. Do not edit `node_modules/` or `dist/`; both are generated.
 - Keep personal page copy in ignored environment configuration. `VITE_LETTER_*` values are public browser content, while `SITE_PASSWORD` is read only by the Vite build configuration.
+- Page view location is approximate only. Store nullable country and city fields, never raw IP addresses or exact coordinates, and keep the data private through Supabase access policies.
 
 ## Verification
 

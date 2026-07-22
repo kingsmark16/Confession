@@ -14,6 +14,7 @@ LIVE: https://confession4u.mcanghel.fun
 - Yes or no final question with an animated garden outcome
 - Optional reply message form
 - Anonymous browser ID so repeat submissions from the same browser update one response row
+- Approximate visitor country and city captured privately from an IP geolocation lookup
 - Supabase storage for the current answer, message, first answer, and answer change count
 
 ## Technology
@@ -145,6 +146,12 @@ grant insert, update on table public.responses to anon, authenticated;
 
 The Supabase publishable key is safe to use in a browser. Never add a Supabase service role key to `.env` values that start with `VITE_`, because Vite exposes those values in the client bundle.
 
+### Approximate visitor location
+
+Page views make a best effort request to `https://ipapi.co/json/` and store only the returned country and city in `public.views`. The app does not request GPS permission and does not store the raw IP address, exact coordinates, or full provider response. The provider still receives the visitor's public IP as part of the lookup request, so disclose this approximate location processing before public launch.
+
+Run [docs/supabase/views-location.sql](docs/supabase/views-location.sql) in the Supabase SQL Editor to add the nullable `country` and `city` columns to an existing `public.views` table. Location failures are ignored and never block the page.
+
 ### Response behavior
 
 Each browser receives an anonymous UUID stored in local storage. The database uses it as a unique key.
@@ -167,6 +174,7 @@ src/
   styles/                      Global CSS and design tokens
   assets/                      Imported images and music
 public/images/memories/        Gallery images with stable public URLs
+docs/supabase/                 SQL setup files for Supabase tables
 docs/specs/                    Product and technical specifications
 ```
 
