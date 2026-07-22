@@ -12,6 +12,7 @@ dist/
 stitch/
 node_modules/
 .codex/
+supabase/.temp/
 dist
 dist-ssr
 *.local

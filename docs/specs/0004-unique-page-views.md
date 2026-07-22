@@ -4,13 +4,13 @@
 
 ## Summary
 
-Record one private page view per anonymous browser device for the confession page. A persistent browser identifier makes reloads idempotent, while Supabase stores the first and most recent visit timestamps. The page also makes a best effort IP based lookup and stores only the returned country and city.
+Record one private page view per anonymous browser device for the confession page. A persistent browser identifier makes reloads idempotent, while Supabase stores the first and most recent visit timestamps. A Supabase Edge Function makes a best effort IP based lookup and stores only the returned country and city.
 
 ## Context
 
 The owner wants to measure distinct anonymous browser devices and see the approximate country and city associated with each visit. The public page must not display this information. The location is inferred from the visitor's public IP by `ipapi.co`, so it is approximate and may identify a network or VPN location rather than the visitor's actual location.
 
-The current application already has a Supabase client, an anonymous identifier helper, and a `public.views` design. Location lookup must remain optional and must never interrupt the confession experience.
+The current application already has a Supabase client, an anonymous identifier helper, and a `public.views` design. Location lookup must remain optional and must never interrupt the confession experience. The browser side provider request was rate limited in the deployed environment, so the lookup belongs in a server side Edge Function.
 
 ## Requirements
 
@@ -26,24 +26,9 @@ The current application already has a Supabase client, an anonymous identifier h
 
 ## Options considered
 
-### Option 1: Client side IP geolocation with `ipapi.co`
+### Option 1: Supabase Edge Function
 
-The browser requests the provider's current IP lookup endpoint, keeps only country and city, and sends those fields to the existing Supabase page view row.
-
-**Pros**:
-
-- Fits the existing static browser architecture.
-- Needs no API key or new server deployment.
-- Does not request precise browser location permission.
-
-**Cons**:
-
-- The provider receives the visitor's public IP as part of the request.
-- City accuracy is approximate and can be wrong for mobile networks, VPNs, and shared connections.
-
-### Option 2: Supabase Edge Function proxy
-
-Call a Supabase Edge Function that obtains the request location and calls a provider from the server side.
+The browser invokes a Supabase Edge Function. The function reads the forwarded visitor IP in memory, calls `ipapi.co` with that IP, keeps only country and city, and writes the page view using the server side Supabase client.
 
 **Pros**:
 
@@ -53,6 +38,21 @@ Call a Supabase Edge Function that obtains the request location and calls a prov
 **Cons**:
 
 - Adds an Edge Function deployment and a new server surface to a static project.
+
+### Option 2: Client side IP geolocation with `ipapi.co`
+
+The browser requests the provider's current IP lookup endpoint, keeps only country and city, and sends those fields to the existing Supabase page view row.
+
+**Pros**:
+
+- Fits the existing static browser architecture.
+- Needs no API key or new server deployment.
+
+**Cons**:
+
+- The deployed browser request was rate limited, producing null location fields.
+- The provider receives the visitor's public IP as part of the request.
+- City accuracy is approximate and can be wrong for mobile networks, VPNs, and shared connections.
 - Still requires a provider and careful handling of request IP data.
 
 ### Option 3: Browser GPS location
@@ -70,15 +70,15 @@ Ask for precise browser location and reverse geocode it into a city and country.
 
 ## Decision
 
-**Chosen option**: Option 1, client side IP geolocation with `ipapi.co`.
+**Chosen option**: Option 1, Supabase Edge Function.
 
-Keep the existing Supabase page view path. Before the insert, make a short timed request to `https://ipapi.co/json/`. Map only `country_name` to `country` and `city` to `city`. If the lookup fails, insert or update the page view without location data. The client never stores or forwards the raw IP, coordinates, or full provider response.
+The browser invokes `record-page-view` with only the page key and anonymous browser identifier. The function reads the forwarded visitor IP in memory, makes a short timed request to `https://ipapi.co/{ip}/json/`, maps only `country_name` to `country` and `city` to `city`, and inserts or updates the page view using the server side Supabase client. If the lookup fails, the page view is still recorded without location data. Neither the browser nor the database persists the raw IP, coordinates, or full provider response.
 
 **Implementation skills**: `develop` (`JavaScript-Mastery-Pro/skills`, `.agents/skills/develop/`) · `supabase` (`supabase`, `.agents/skills/supabase/`)
 
 ## Rationale
 
-The requested data is approximate country and city, not precise location. A small client side lookup keeps the current static architecture and avoids a new server deployment. The privacy boundary is enforced by selecting only two fields before writing to Supabase and by keeping the data private through existing table access rules.
+The requested data is approximate country and city, not precise location. A small Supabase Edge Function keeps the public browser static while avoiding browser origin behavior and provider rate limits. The privacy boundary is enforced by selecting only two fields before writing to Supabase, keeping the raw IP in memory only, and keeping the data private through existing table access rules.
 
 ## Feature design
 
@@ -99,8 +99,8 @@ No new visible UI state. The page view flow starts a best effort location lookup
 
 | Endpoint | Method | Key inputs | Key outputs | Auth | Key errors |
 |---|---|---|---|---|---|
-| `https://ipapi.co/json/` | GET | visitor network identity inferred by provider | provider JSON, used only for country and city | none | timeout, rate limit, unavailable, malformed response |
-| `recordPageView(pageKey)` | client helper | `pageKey: string` | `void` | Supabase publishable key | duplicate conflict, schema error, network error, all logged and swallowed |
+| `record-page-view` | POST | `pageKey`, `anonymousId` | `{ ok: boolean }` | public Edge Function endpoint, validated payload | timeout, rate limit, unavailable, malformed response, database error |
+| `recordPageView(pageKey)` | client helper | `pageKey: string` | `void` | Supabase publishable key | function or network error, logged and swallowed |
 
 **Key invariants**:
 
@@ -113,7 +113,8 @@ No new visible UI state. The page view flow starts a best effort location lookup
 
 **Security model**:
 
-- Anonymous visitors may insert and update only their own page view row according to the existing RLS design.
+- The Edge Function validates the fixed `confession` page key and UUID shaped anonymous identifier before writing.
+- The Edge Function uses the built in Supabase service role secret for the insert and duplicate update. That secret is never sent to the browser.
 - Anonymous visitors have no `SELECT` or `DELETE` access.
 - The owner views rows through the authenticated Supabase Dashboard.
 - The third party provider receives the visitor request IP through the normal network request. The README must disclose this approximate location lookup.
@@ -121,7 +122,7 @@ No new visible UI state. The page view flow starts a best effort location lookup
 
 **Configuration required**:
 
-No new environment variables. Existing `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` remain unchanged.
+No new browser environment variables. Existing `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` remain unchanged. The Edge Function uses Supabase's built in `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` secrets.
 
 **Database setup required**:
 
@@ -139,15 +140,16 @@ Run `docs/supabase/views-location.sql` in the Supabase SQL Editor before expecti
 ## Build plan
 
 1. Add nullable `country` and `city` columns to the existing `public.views` table setup and document the SQL, satisfying **AC-5**, **AC-7**, and **AC-8**.
-2. Add a timed, defensive `ipapi.co` lookup that returns only trimmed country and city fields, satisfying **AC-4**, **AC-5**, and **AC-6**.
-3. Include optional location fields in the existing idempotent page view insert and update flow, satisfying **AC-1**, **AC-2**, **AC-3**, **AC-6**, and **AC-8**.
-4. Update the README with the provider, privacy boundary, database setup, and verification steps, then run lint and production build, satisfying **AC-6**, **AC-7**, and **AC-9**.
+2. Add a public Edge Function with CORS handling, payload validation, a timed `ipapi.co` lookup, and server side page view insert or update, satisfying **AC-1** through **AC-8**.
+3. Replace the browser side provider request with a function invocation that sends no location or IP fields, satisfying **AC-4**, **AC-5**, and **AC-6**.
+4. Update the README with the provider, privacy boundary, function deployment, database setup, and verification steps, then run lint and production build, satisfying **AC-6**, **AC-7**, and **AC-9**.
 
 ## Consequences
 
 **Positive**:
 
 - The owner can privately see approximate country and city for unique page view rows.
+- The provider request no longer depends on browser origin behavior or browser rate limiting.
 - No GPS prompt, exact coordinates, raw IP storage, or public location UI is added.
 - Existing page view uniqueness and failure behavior remain intact.
 
@@ -155,7 +157,8 @@ Run `docs/supabase/views-location.sql` in the Supabase SQL Editor before expecti
 
 - A third party receives the visitor's public IP through the lookup request.
 - City results are approximate and may be wrong or unavailable.
-- Provider availability and rate limits can reduce location coverage.
+- Provider availability and rate limits can still reduce location coverage.
+- The Edge Function must be deployed separately from the Azure Static Web App.
 - The database schema must be updated manually before the new fields can be written.
 
 **Neutral**:
@@ -165,4 +168,5 @@ Run `docs/supabase/views-location.sql` in the Supabase SQL Editor before expecti
 ## Follow-up
 
 - [ ] Apply `docs/supabase/views-location.sql` in the Supabase SQL Editor and confirm the columns and existing RLS policies are live.
+- [ ] Deploy `record-page-view` with the Supabase CLI and confirm a deployed page view receives country and city when the provider responds.
 - [ ] Add a visible privacy notice before public launch that explains approximate location collection and the provider involved.

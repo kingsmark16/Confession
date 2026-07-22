@@ -1,0 +1,2 @@
+[functions.record-page-view]
+verify_jwt = false

@@ -92,7 +92,7 @@ If deployment reports `No matching Static Web App was found or the api key was i
 
 ## Supabase setup
 
-The page writes directly to `public.responses`. There is no custom backend, account system, or in app admin screen. View submissions in the Supabase Dashboard Table Editor.
+The page writes responses directly to `public.responses`. Page view tracking uses the `record-page-view` Supabase Edge Function so the visitor location lookup runs outside the browser. There is no account system or in app admin screen. View submissions and page views in the Supabase Dashboard Table Editor.
 
 Run this in the Supabase SQL Editor for a fresh setup:
 
@@ -148,9 +148,19 @@ The Supabase publishable key is safe to use in a browser. Never add a Supabase s
 
 ### Approximate visitor location
 
-Page views make a best effort request to `https://ipapi.co/json/` and store only the returned country and city in `public.views`. The app does not request GPS permission and does not store the raw IP address, exact coordinates, or full provider response. The provider still receives the visitor's public IP as part of the lookup request, so disclose this approximate location processing before public launch.
+Page views invoke the `record-page-view` Supabase Edge Function. The function reads the visitor's forwarded public IP only in memory, requests an approximate location from `ipapi.co`, and stores only the returned country and city in `public.views`. The app does not request GPS permission and does not store the raw IP address, exact coordinates, or full provider response. The provider still receives the visitor's public IP as part of the lookup request, so disclose this approximate location processing before public launch.
 
 Run [docs/supabase/views-location.sql](docs/supabase/views-location.sql) in the Supabase SQL Editor to add the nullable `country` and `city` columns to an existing `public.views` table. Location failures are ignored and never block the page.
+
+Deploy the function once after the database columns exist:
+
+```bash
+supabase login
+supabase link --project-ref your-project-ref
+supabase functions deploy record-page-view
+```
+
+The function uses Supabase's built in `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` secrets. Never add the service role key to `.env`, GitHub Secrets used by the Vite client, or any `VITE_` variable.
 
 ### Response behavior
 

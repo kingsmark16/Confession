@@ -1,6 +1,6 @@
 # Confession
 
-This is a static, public pop art love confession page. It is a browser only React experience with no API, server, database, authentication, form submission, or persisted visitor data. It uses local environment configuration for build time page copy and password setup. Work as a senior React and TypeScript frontend engineer, and do not invent backend layers the repository does not contain.
+This is a static, public pop art love confession page. Its public UI is a browser based React experience with Supabase backed responses and page view tracking. Server side page view location capture lives in `supabase/functions/record-page-view/`. It uses local environment configuration for build time page copy and password setup. Work as a senior React and TypeScript frontend engineer, and do not invent backend layers beyond the documented Supabase paths.
 
 ## Stack
 
@@ -32,6 +32,7 @@ In Windows PowerShell environments that block `npm.ps1`, use `npm.cmd` with the 
 - Keep the page, its components, static data, browser behavior, and feature CSS in `src/features/confession/`. Promote code to `src/components/` only after real reuse across features.
 - `src/styles/index.css` is the runtime stylesheet entry, and `src/styles/tokens.css` owns design tokens. The `src/index.css` references in `design.md` and `components.json` are stale.
 - Stable URL assets belong in `public/`; imported assets belong in `src/assets/`. Gallery images must remain local under `public/images/memories/`. The root `README.md` is still Vite template text, not product guidance.
+- `supabase/functions/record-page-view/index.ts` is the server side page view path. It may read the forwarded IP only in memory, and it stores only nullable country and city values.
 
 ## Rules
 
@@ -70,6 +71,6 @@ For a planned feature, use `/scope` then `/architect`, `/develop`, `/check verif
 
 ## Context files
 
-- No nested `AGENTS.md` is warranted for the current small, single feature source tree.
+- [supabase/AGENTS.md](supabase/AGENTS.md): Supabase Edge Function conventions and deployment notes.
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
