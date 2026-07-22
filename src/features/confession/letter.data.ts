@@ -10,7 +10,7 @@ Then about a week later, that moment happened. You know it.When you accidentaly 
 
 Since then, you’ve been on my mind all the time, randomly and unexpectedly, no matter what I’m doing. And it’s strange, but in a good way. You made my life feel exciting again. 🌸 Waking up in the morning felt different, like I had something to look forward to. Like I had a reason to go to work, because there was a chance I’d see you. 😊
 
-But then, things didn’t go the way I hoped. We were pulled out of the RHU and were reassigned to different department. I felt really sad, honestly. 💔 Not being able to see you anymore, it hurt more than I expected.
+But then, things didn’t go the way I hoped. I was pulled out of the RHU and reassigned to a different department. I felt really sad, honestly. 💔 Not being able to see you anymore, it hurt more than I expected.
 
 But instead of fading, my feelings for you only grew deeper. 💞
 
