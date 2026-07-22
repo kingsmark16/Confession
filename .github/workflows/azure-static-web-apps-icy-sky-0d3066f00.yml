@@ -35,6 +35,10 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
+          VITE_LETTER_AUTHOR: ${{ secrets.VITE_LETTER_AUTHOR }}
+          VITE_LETTER_RECIPIENT: ${{ secrets.VITE_LETTER_RECIPIENT }}
+          VITE_LETTER_MESSAGE: ${{ secrets.VITE_LETTER_MESSAGE }}
+          VITE_LETTER_SIGNATURE: ${{ secrets.VITE_LETTER_SIGNATURE }}
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
