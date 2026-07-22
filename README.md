@@ -14,7 +14,7 @@ LIVE: https://confession4u.mcanghel.fun
 - Yes or no final question with an animated garden outcome
 - Optional reply message form
 - Anonymous browser ID so repeat submissions from the same browser update one response row
-- Approximate visitor country and city captured privately from an IP geolocation lookup
+- Approximate visitor country and city captured privately from an IP geolocation lookup, with optional consent based browser location refinement
 - Supabase storage for the current answer, message, first answer, and answer change count
 
 ## Technology
@@ -148,7 +148,7 @@ The Supabase publishable key is safe to use in a browser. Never add a Supabase s
 
 ### Approximate visitor location
 
-Page views invoke the `record-page-view` Supabase Edge Function. The function reads the visitor's forwarded public IP only in memory, requests only an approximate country and city from `ipwho.is`, and stores only those fields in `public.views`. The app does not request GPS permission and does not store the raw IP address, exact coordinates, or full provider response. The provider still receives the visitor's public IP as part of the lookup request, so disclose this approximate location processing before public launch.
+Page views invoke the `record-page-view` Supabase Edge Function. The default path reads the visitor's forwarded public IP only in memory, requests only an approximate country and city from `ipwho.is`, and stores only those fields in `public.views`. Visitors can optionally press the location button to grant browser location permission. When granted, the browser sends the coordinates to BigDataCloud's client side reverse geocoding endpoint, then sends only the returned city and country to Supabase. The app never stores exact coordinates or the full provider response. Both providers receive location related request data, so disclose this processing before public launch.
 
 Run [docs/supabase/views-location.sql](docs/supabase/views-location.sql) in the Supabase SQL Editor to add the nullable `country` and `city` columns to an existing `public.views` table. Location failures are ignored and never block the page.
 
