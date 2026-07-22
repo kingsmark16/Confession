@@ -9,7 +9,7 @@ LIVE: https://confession4u.mcanghel.fun
 - Pop art responsive layout with animated decorative icons
 - Sticky navigation that hides while scrolling down and returns while scrolling up
 - Built in music player using tracks from `src/assets/music/`
-- Multi page love letter driven by editable data in `src/features/confession/letter.data.ts`
+- Multi page love letter driven by local environment configuration
 - Memory gallery and reasons section
 - Yes or no final question with an animated garden outcome
 - Optional reply message form
@@ -38,8 +38,14 @@ Create a `.env` file in the project root:
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+VITE_LETTER_AUTHOR=your-name
+VITE_LETTER_RECIPIENT=recipient-name
+VITE_LETTER_MESSAGE="Your full letter message"
+VITE_LETTER_SIGNATURE=your-signature
 SITE_PASSWORD=your-private-page-password
 ```
+
+You can copy `.env.example` as a starting point. Keep `.env` local and never commit it. The `VITE_LETTER_*` values are page content, so Vite includes them in the public browser bundle. They are kept in environment configuration to keep personal content out of GitHub source files, not to hide it from visitors.
 
 `SITE_PASSWORD` is read only while Vite starts or builds the project. The generated browser bundle receives its SHA-256 hash, not the plain password. This gate discourages casual access, but it is not a replacement for hosting level access control.
 
@@ -73,9 +79,13 @@ AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_SKY_0D3066F00
 VITE_SUPABASE_URL
 VITE_SUPABASE_PUBLISHABLE_KEY
 SITE_PASSWORD
+VITE_LETTER_AUTHOR
+VITE_LETTER_RECIPIENT
+VITE_LETTER_MESSAGE
+VITE_LETTER_SIGNATURE
 ```
 
-The Azure token comes from the Static Web App deployment token. The Supabase values are used during the client build. `SITE_PASSWORD` is used only while building the password gate and is never passed as a plain value to the browser bundle.
+The Azure token comes from the Static Web App deployment token. The Supabase values and `VITE_LETTER_*` values are used during the client build. The letter values are public page content, but keeping them in GitHub Secrets prevents personal copy from being committed to the repository. `SITE_PASSWORD` is used only while building the password gate and is never passed as a plain value to the browser bundle.
 
 If deployment reports `No matching Static Web App was found or the api key was invalid`, open the Azure Static Web App resource that owns this site, choose **Manage deployment token**, copy the current token, and replace the GitHub secret `AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_SKY_0D3066F00`. The token must come from the same Static Web App resource. Resetting or recreating that resource invalidates older tokens.
 
@@ -164,7 +174,8 @@ See [src/README.md](src/README.md) for the source folder conventions.
 
 ## Content updates
 
-- Edit `src/features/confession/letter.data.ts` to change the letter, recipient, sender, and page sizing.
+- Change `VITE_LETTER_AUTHOR`, `VITE_LETTER_RECIPIENT`, `VITE_LETTER_MESSAGE`, and `VITE_LETTER_SIGNATURE` in local `.env` configuration for development. Update the matching GitHub Secrets before deploying.
+- Edit `src/features/confession/letter.data.ts` only to change letter pagination behavior.
 - Edit `src/features/confession/confession.data.ts` to update page copy, reasons, and gallery content.
 - Replace or add music in `src/assets/music/`, then update `src/features/music-player/musicPlayer.data.ts`.
 - Replace the gallery image in `src/assets/you.png` or the public memory images as needed.
